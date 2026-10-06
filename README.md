@@ -61,3 +61,9 @@ npx expo install --check
 Prueba física pendiente en Android e iOS: permiso concedido/rechazado, detección de mesa, colocación estable, selección, resaltado, ajuste de tamaño, recolocación y salida del visor. Comprobar también el mensaje en dispositivos sin soporte RA.
 
 Repositorio: https://github.com/PMcodingec/Ecomar
+
+## Mejora del arrecife
+
+La escena utiliza corales ramificados, algas con hojas, peces con ojos y aletas, grupos de microalgas y rocas. Las interacciones unen sus participantes con una línea sin dirección, conservando sus colores. Controles de giro y etiquetas, y marcador de selección. Los modelos son geométricos y educativos, no reproducciones anatómicas. Las microalgas se muestran ampliadas fuera del coral para permitir seleccionarlas.
+
+Para ver estos cambios en un APK preview es necesario generar otra compilación. En una compilación de desarrollo ya instalada, se pueden cargar con `npm start`. Validación física Android/iOS pendiente.
