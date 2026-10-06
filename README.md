@@ -67,3 +67,9 @@ Repositorio: https://github.com/PMcodingec/Ecomar
 La escena utiliza corales ramificados, algas con hojas, peces con ojos y aletas, grupos de microalgas y rocas. Las interacciones unen sus participantes con una línea sin dirección, conservando sus colores. Controles de giro y etiquetas, y marcador de selección. Los modelos son geométricos y educativos, no reproducciones anatómicas. Las microalgas se muestran ampliadas fuera del coral para permitir seleccionarlas.
 
 Para ver estos cambios en un APK preview es necesario generar otra compilación. En una compilación de desarrollo ya instalada, se pueden cargar con `npm start`. Validación física Android/iOS pendiente.
+
+## Bienvenida del primer ingreso
+
+Tres pasos ilustrados explican EcoMar, las interacciones marinas y cómo permitir la cámara y colocar el arrecife. El permiso se solicita únicamente al pulsar el botón y puede dejarse para el visor RA. Al finalizar, se guarda una marca local con AsyncStorage; no se repite en el siguiente inicio. Puede revisarse desde "Ver guía de bienvenida". Borrar los datos o reinstalar reinicia la bienvenida.
+
+La dependencia AsyncStorage requiere una nueva compilación si no estaba incluida en la aplicación de desarrollo instalada. Verificar en dispositivo: primer inicio, reinicio posterior, denegación de cámara, permiso desde ajustes y revisión de guía.
