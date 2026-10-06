@@ -16,6 +16,6 @@ function Entry() {
   }, []);
   if (!ready) return <View style={{ flex: 1, backgroundColor: '#F6F8F3', justifyContent: 'center' }}><StatusBar style="dark" /><ActivityIndicator color="#237D7C" accessibilityLabel="Preparando EcoMar" /></View>;
   if (!complete) return <><StatusBar style="dark" /><Onboarding onComplete={async () => { await AsyncStorage.setItem(welcomeKey, 'complete'); setComplete(true); }} /></>;
-  return <><StatusBar style="light" /><Stack screenOptions={{ headerStyle: { backgroundColor: '#062C3B' }, headerTintColor: '#fff', contentStyle: { backgroundColor: '#062C3B' } }}><Stack.Screen name="index" options={{ title: 'EcoMar' }} /><Stack.Screen name="ar" options={{ title: 'Explorar arrecife' }} /><Stack.Screen name="welcome" options={{ headerShown: false }} /></Stack></>;
+  return <><StatusBar style="light" /><Stack screenOptions={{ headerStyle: { backgroundColor: '#062C3B' }, headerTintColor: '#fff', contentStyle: { backgroundColor: '#062C3B' } }}><Stack.Screen name="index" options={{ title: 'EcoMar', headerShown: false }} /><Stack.Screen name="ar" options={{ title: 'Explorar arrecife' }} /><Stack.Screen name="welcome" options={{ headerShown: false }} /></Stack></>;
 }
 export default function Layout() { return <SafeAreaProvider><Entry /></SafeAreaProvider>; }
