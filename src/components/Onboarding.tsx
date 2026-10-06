@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Alert, Image, Linking, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCameraPermissions } from 'expo-camera';
@@ -13,7 +13,12 @@ export default function Onboarding({ onComplete }: { onComplete: () => Promise<v
   const [permission, requestPermission] = useCameraPermissions();
   const insets = useSafeAreaInsets();
   const { width, height } = useWindowDimensions();
-  const slide = slides[step];
+  const pager = useRef<ScrollView>(null);
+  function goTo(index: number) {
+    const next = Math.max(0, Math.min(slides.length - 1, index));
+    setStep(next);
+    pager.current?.scrollTo({ x: next * width, animated: true });
+  }
   async function finish() {
     setBusy(true);
     try { await onComplete(); }
@@ -28,18 +33,20 @@ export default function Onboarding({ onComplete }: { onComplete: () => Promise<v
   }
   return <View style={[s.page, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
     <View style={s.top}><Text style={s.brand}>EcoMar</Text><Text style={s.counter}>{step + 1} / 3</Text></View>
-    <ScrollView contentContainerStyle={s.content} bounces={false}>
-      <Image source={slide.image} accessibilityLabel={step === 2 ? 'Teléfono explorando un arrecife sobre una mesa' : 'Ilustración de un ecosistema marino'} style={{ width: Math.min(width - 48, 420), height: Math.min(width - 48, height * .36, 360), alignSelf: 'center' }} resizeMode="contain" />
+    <ScrollView ref={pager} key={width} horizontal pagingEnabled scrollEnabled={!busy} showsHorizontalScrollIndicator={false} bounces={false} directionalLockEnabled onLayout={() => pager.current?.scrollTo({ x: step * width, animated: false })} onMomentumScrollEnd={event => setStep(Math.max(0, Math.min(slides.length - 1, Math.round(event.nativeEvent.contentOffset.x / width))))} style={{ flex: 1 }}>
+      {slides.map((slide, index) => <ScrollView key={slide.eyebrow} style={{ width }} contentContainerStyle={s.content} bounces={false} nestedScrollEnabled directionalLockEnabled>
+      <Image source={slide.image} accessibilityLabel={index === 2 ? 'Teléfono explorando un arrecife sobre una mesa' : 'Ilustración de un ecosistema marino'} style={{ width: Math.min(width - 48, 420), height: Math.min(width - 48, height * .36, 360), alignSelf: 'center' }} resizeMode="contain" />
       <Text style={s.eyebrow}>{slide.eyebrow}</Text><Text accessibilityRole="header" style={s.title}>{slide.title}</Text><Text style={s.body}>{slide.body}</Text>
-      {step === 2 && <>
+      {index === 2 && <>
         <Pressable accessibilityRole="button" disabled={permission?.granted} onPress={camera} style={[s.camera, permission?.granted && s.granted]}><Text style={s.cameraText}>{permission?.granted ? '✓ Cámara habilitada' : permission && !permission.canAskAgain ? 'Abrir ajustes de cámara' : 'Permitir acceso a la cámara'}</Text></Pressable>
         <Text style={s.note}>También puedes continuar y permitirla al abrir la experiencia RA. Necesitas la aplicación instalada y un dispositivo compatible.</Text>
       </>}
+      </ScrollView>)}
     </ScrollView>
     <View style={s.bottom}>
       <View style={s.dots} accessibilityLabel={`Paso ${step + 1} de 3`}>{slides.map((_, i) => <View key={i} style={[s.dot, step === i && s.current]} />)}</View>
-      <Pressable accessibilityRole="button" disabled={busy} style={[s.next, busy && { opacity: .6 }]} onPress={() => step < 2 ? setStep(v => v + 1) : finish()}><Text style={s.nextText}>{busy ? 'Guardando…' : step < 2 ? 'Continuar →' : 'Comenzar a explorar →'}</Text></Pressable>
-      {step > 0 && <Pressable accessibilityRole="button" disabled={busy} onPress={() => setStep(v => v - 1)} style={s.back}><Text style={s.backText}>Volver</Text></Pressable>}
+      <Pressable accessibilityRole="button" disabled={busy} style={[s.next, busy && { opacity: .6 }]} onPress={() => step < 2 ? goTo(step + 1) : finish()}><Text style={s.nextText}>{busy ? 'Guardando…' : step < 2 ? 'Continuar →' : 'Comenzar a explorar →'}</Text></Pressable>
+      {step > 0 && <Pressable accessibilityRole="button" disabled={busy} onPress={() => goTo(step - 1)} style={s.back}><Text style={s.backText}>Volver</Text></Pressable>}
     </View>
   </View>;
 }
