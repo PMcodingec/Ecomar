@@ -7,7 +7,8 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "ec.pmcoding.ecomar"
     },
     "android": {
       "adaptiveIcon": {
@@ -16,10 +17,33 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "ec.pmcoding.ecomar"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "scheme": "ecomar",
+    "plugins": [
+      "expo-router",
+      [
+        "@reactvision/react-viro",
+        {
+          "ios": {
+            "cameraUsagePermission": "EcoMar usa la cámara para colocar el ecosistema marino en tu entorno."
+          },
+          "android": {
+            "xRMode": "AR"
+          }
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "recordAudioAndroid": false,
+          "cameraPermission": "EcoMar usa la cámara para explorar ecosistemas en realidad aumentada."
+        }
+      ]
+    ]
   }
 }
